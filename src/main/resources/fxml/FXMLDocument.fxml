@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="492.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo13.desktop.Controller.FXMLDocumentController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe0" height="518.0" layoutY="-11.0" stroke="BLACK" strokeType="INSIDE" width="700.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="147.0" layoutX="7.0" layoutY="339.0" stroke="BLACK" strokeType="INSIDE" width="684.0" />
+        <ImageView fitHeight="288.0" fitWidth="321.0" layoutX="14.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../java/gruppo13/desktop/util/unnamed.jpg" />
+            </image>
+        </ImageView>
+        <Label layoutX="456.0" layoutY="206.0" text="Password">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <PasswordField fx:id="passwd" layoutX="456.0" layoutY="238.0" prefHeight="32.0" prefWidth="178.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#94949408" height="147.0" layoutX="431.0" layoutY="183.0" stroke="BLACK" strokeType="INSIDE" width="235.0" />
+        <Label layoutX="25.0" layoutY="155.0" text="Progetto applicazione CV-19 ">
+            <font>
+                <Font name="System Bold" size="19.0" />
+            </font>
+        </Label>
+        <Label layoutX="25.0" layoutY="193.0" text="Gestione visitatori">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="25.0" layoutY="352.0" text="Insegnamento Ingegneria del Software 2019/2020" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="25.0" layoutY="392.0" text="Abbate Carmine N86002234" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="25.0" layoutY="420.0" textFill="WHITE">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+        <Label layoutX="25.0" layoutY="423.0" text="Di Lorenzo Luca N86002199" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <Button layoutX="522.0" layoutY="293.0" mnemonicParsing="false" onAction="#btnpressed" text="Login" />
+    </children>
+</AnchorPane>

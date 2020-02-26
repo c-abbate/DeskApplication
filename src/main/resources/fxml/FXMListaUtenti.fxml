@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="gruppo13.desktop.Controller.FXMListaUtentiController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#041a40c0" height="506.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="700.0" />
+        <TableView layoutX="44.0" layoutY="133.0" prefHeight="255.0" prefWidth="624.0">
+            <columns>
+                <TableColumn prefWidth="209.0" text="NickName" />
+                <TableColumn minWidth="0.0" prefWidth="198.0" text="Cognome" />
+                <TableColumn prefWidth="214.0" text="Nome" />
+            </columns>
+        </TableView>
+        <Button layoutX="496.0" layoutY="413.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="172.0" style="-fx-background-color: #f7e600;" text="SOSPENDI UTENTE" textFill="#02199a">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
