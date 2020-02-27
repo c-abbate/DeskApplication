@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 group 'gruppo13'
@@ -18,9 +20,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
+    implementation 'com.google.firebase:firebase-admin:6.12.2'
   
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
    
+}
+
+javafx {
+    version = "11"
+    modules = [ 'javafx.controls','javafx.fxml','javafx.graphics' ]
 }
