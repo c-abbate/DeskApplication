@@ -7,12 +7,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="gruppo13.desktop.Controller.FXMLCancellazioniController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo13.desktop.Controller.FXMLCancellazioniController">
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#041a40c0" height="500.0" stroke="BLACK" strokeType="INSIDE" width="700.0" />
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe3" height="228.0" layoutX="17.0" layoutY="104.0" stroke="BLACK" strokeType="INSIDE" width="667.0" />
-        <TextArea layoutX="272.0" layoutY="131.0" prefHeight="176.0" prefWidth="379.0" />
+        <TextArea layoutX="272.0" layoutY="131.0" prefHeight="176.0" prefWidth="379.0" text="&#10;&#10;" />
         <Label layoutX="140.0" layoutY="131.0" text="Motivazione">
             <font>
                 <Font name="System Bold" size="21.0" />
