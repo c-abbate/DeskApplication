@@ -1,26 +1,44 @@
 package gruppo13.desktop.Controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.firebase.cloud.FirestoreClient;
-import javafx.fxml.Initializable;
-import gruppo13.desktop.ApplicationClass.Segnalazioni;
-import javafx.scene.control.TextArea;
+public class FXMLSegnalazioniController {
 
+    @FXML
+    private ResourceBundle resources;
 
-public class FXMLSegnalazioniController implements Initializable{
+    @FXML
+    private URL location;
 
-    public TextArea segnalazioni;
+    @FXML
+    private Button btnelimina;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    private Button btnannulla;
+
+    @FXML
+    private ListView<?> listsegnalazioni;
+
+    @FXML
+    public void annullapressed(ActionEvent event) {
+
+    }
+
+    @FXML
+    public void eliminapressed(ActionEvent event) {
+
+    }
+
+    @FXML
+    void initialize() {
+        assert btnelimina != null : "fx:id=\"btnelimina\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
+        assert btnannulla != null : "fx:id=\"btnannulla\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
+        assert listsegnalazioni != null : "fx:id=\"listsegnalazioni\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
 
     }
 }

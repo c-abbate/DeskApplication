@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo13.desktop.Controller.FXMLSegnalazioniController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo13.desktop.Controller.FXMLSegnalazioniController">
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#041a40bf" height="512.0" layoutX="-5.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="708.0" />
-        <TextArea fx:id="segnalazioni" editable="false" layoutX="56.0" layoutY="69.0" prefHeight="192.0" prefWidth="465.0">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </TextArea>
-        <Button layoutX="560.0" layoutY="69.0" mnemonicParsing="false" prefHeight="3.0" prefWidth="100.0" style="-fx-background-color: #f7e600;" text="ELIMINA" textFill="#02199a">
+        <Button fx:id="btnelimina" layoutX="560.0" layoutY="69.0" mnemonicParsing="false" onAction="#eliminapressed" prefHeight="3.0" prefWidth="100.0" style="-fx-background-color: #f7e600;" text="ELIMINA" textFill="#02199a">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
         </Button>
-        <Button layoutX="560.0" layoutY="125.0" mnemonicParsing="false" prefHeight="3.0" prefWidth="100.0" style="-fx-background-color: #f7e600;" text="ANNULLA" textFill="#02199a">
+        <Button fx:id="btnannulla" layoutX="560.0" layoutY="125.0" mnemonicParsing="false" onAction="#annullapressed" prefHeight="3.0" prefWidth="100.0" style="-fx-background-color: #f7e600;" text="ANNULLA" textFill="#02199a">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
         </Button>
+      <ListView fx:id="listsegnalazioni" layoutX="39.0" layoutY="69.0" prefHeight="333.0" prefWidth="501.0" />
     </children>
 </AnchorPane>

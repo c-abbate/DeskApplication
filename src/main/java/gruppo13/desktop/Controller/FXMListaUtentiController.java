@@ -1,5 +1,6 @@
 package gruppo13.desktop.Controller;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,18 +14,37 @@ import com.google.firebase.cloud.FirestoreClient;
 import gruppo13.desktop.Model.Utenti;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FXMListaUtentiController implements Initializable {
 
-    public TableColumn nickname;
-    public TableColumn cognome;
-    public TableColumn nome;
-    public TableView<Utenti> tabella;
+    @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private TableView<Utenti> tabella;
+
+    @FXML
+    private TableColumn<?, ?> nickname;
+
+    @FXML
+    private TableColumn<?, ?> cognome;
+
+    @FXML
+    private TableColumn<?, ?> nome;
+
+
+    public void clicksospendi(javafx.event.ActionEvent actionEvent) {
+
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,4 +73,6 @@ public class FXMListaUtentiController implements Initializable {
         }
         tabella.setItems(observableList);
     }
+
+
 }
