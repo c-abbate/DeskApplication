@@ -1,15 +1,24 @@
 package gruppo13.desktop.Controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import gruppo13.desktop.ApplicationClass.*;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
+import gruppo13.desktop.ApplicationClass.DesktopApplication;
+import gruppo13.desktop.ApplicationClass.GestioneVisitatori;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 
 public class FXMLDocumentController {
@@ -28,10 +37,42 @@ public class FXMLDocumentController {
 
         String password= passwd.getText();
         boolean flag=false;
+        if(password.length()==28){
+            Firestore db = FirestoreClient.getFirestore();
+
+            ApiFuture<QuerySnapshot> query = db.collection("Utenti")
+                    .whereEqualTo("idUtente",password)
+                    .get();
+
+            QuerySnapshot querySnapshot = null;
+            try {
+                querySnapshot = query.get();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } catch (ExecutionException ex) {
+                ex.printStackTrace();
+            }
+
+            List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                if(document.getString("idUtente").equals(password)){
+                    if(document.getBoolean("admin")){
+                        JOptionPane.showMessageDialog(null,"Accesso riuscito");
+                        flag=true;
+                        DesktopApplication.btnpressed( );
+                    }else
+                        JOptionPane.showMessageDialog(null,"L'account non possiede i permessi");
+                    flag=true;
+                }
+            }
+            if(flag==false)
+                JOptionPane.showMessageDialog(null,"Accesso fallito");
+        }else
+            JOptionPane.showMessageDialog(null,"Accesso fallito");
 
 
 
-        DesktopApplication.btnpressed( );
+
 
 
     }
