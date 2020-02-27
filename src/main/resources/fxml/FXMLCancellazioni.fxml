@@ -9,8 +9,8 @@
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo13.desktop.Controller.FXMLCancellazioniController">
     <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#041a40c0" height="500.0" stroke="BLACK" strokeType="INSIDE" width="700.0" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe3" height="228.0" layoutX="17.0" layoutY="104.0" stroke="BLACK" strokeType="INSIDE" width="667.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#041a40c0" height="600.0" stroke="BLACK" strokeType="INSIDE" width="800.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe3" height="388.0" layoutX="17.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="754.0" />
         <Label layoutX="32.0" layoutY="124.0" text="Motivazione">
             <font>
                 <Font name="System Bold" size="21.0" />
@@ -26,11 +26,11 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </Label>
-        <Button layoutX="463.0" layoutY="354.0" mnemonicParsing="false" onAction="#confermaclicked" prefHeight="30.0" prefWidth="223.0" style="-fx-background-color: #f7e600;" text="CONFERMA" textFill="#02199a">
+        <Button layoutX="548.0" layoutY="501.0" mnemonicParsing="false" onAction="#confermaclicked" prefHeight="30.0" prefWidth="223.0" style="-fx-background-color: #f7e600;" text="CONFERMA" textFill="#02199a">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
         </Button>
-      <ListView layoutX="202.0" layoutY="118.0" prefHeight="200.0" prefWidth="435.0" />
+      <ListView layoutX="162.0" layoutY="128.0" prefHeight="278.0" prefWidth="576.0" />
     </children>
 </AnchorPane>
