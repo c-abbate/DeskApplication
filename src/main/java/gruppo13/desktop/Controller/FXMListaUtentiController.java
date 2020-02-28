@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
+
+import com.google.firebase.auth.UserRecord;
 import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
@@ -42,11 +44,42 @@ public class FXMListaUtentiController implements Initializable {
     @FXML
     private TableColumn<?, ?> nome;
 
+    Firestore database = FirestoreClient.getFirestore();
 
     public void clicksospendi(javafx.event.ActionEvent actionEvent) {
+
+    ObservableList<Utenti> observableList = FXCollections.observableArrayList();
+
+   //Ottenere il nickname da una riga della tableview
     ObservableList<Utenti>utentiList;
     utentiList=tabella.getSelectionModel().getSelectedItems();
     String nick=utentiList.get(0).getNickname();
+
+    //Dal nickname ricavo lo UID dell'Utente
+        ApiFuture<QuerySnapshot> query_utenti = database.collection("Utenti").get();
+        QuerySnapshot querySnapshot_users= null;
+        List<QueryDocumentSnapshot> documents_user=querySnapshot_users.getDocuments() ;
+
+
+        try {
+            querySnapshot_users=query_utenti.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        for (QueryDocumentSnapshot document : documents_user){
+            if( document.getId().equals(nick)){
+
+                    observableList.add(new Utenti(document.getString("idutente"),document.getString("nome"),document.getString("cognome"),document.getString("nickname")));
+
+            }
+
+        }
+
+    //Metodo firebase richiesta sospensione account
+        UserRecord.UpdateRequest request= new UserRecord.UpdateRequest();
 
     }
 
