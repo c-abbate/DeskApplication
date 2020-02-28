@@ -19,6 +19,7 @@ public class Segnalazioni {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setTitle("Recensioni Segnalate");
         stage.show();
     }
 }

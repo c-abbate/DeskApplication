@@ -18,6 +18,7 @@ public class ListaUtenti {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setTitle("Utenti Iscritti");
         stage.show();
     }
 }

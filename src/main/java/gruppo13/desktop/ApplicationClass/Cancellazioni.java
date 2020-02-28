@@ -12,6 +12,7 @@ public class Cancellazioni {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setTitle("Cancellazioni");
         stage.show();
     }
 }

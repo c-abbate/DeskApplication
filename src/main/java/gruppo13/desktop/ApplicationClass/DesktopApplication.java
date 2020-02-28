@@ -71,6 +71,7 @@ public class DesktopApplication extends Application {
         try{
             FXMLLoader root = getFxml("FXMLDocument");
             Login=loadStage(root);
+            Login.setTitle("Login");
             Login.show();
 
         }catch(IOException e){
@@ -106,6 +107,7 @@ public class DesktopApplication extends Application {
 
             //  GestioneVisitatoriController = loader.getController();
             closeLogin();
+            GestioneVisitatori.setTitle("Gestione Visitatori");
             GestioneVisitatori.show();
         }
         catch (Exception e) {
