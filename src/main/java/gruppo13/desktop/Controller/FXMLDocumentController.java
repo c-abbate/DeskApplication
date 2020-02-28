@@ -38,11 +38,11 @@ public class FXMLDocumentController {
 
         String password= passwd.getText();
         boolean flag=false;
-        if(password.length()==28){
+        if(password.equals("admin")){
             Firestore db = FirestoreClient.getFirestore();
 
             ApiFuture<QuerySnapshot> query = db.collection("Utenti")
-                    .whereEqualTo("idUtente",password)
+                    .whereEqualTo("idUtente","2h7jkYKHJ1WG066gXGv6HVDZB9m1")
                     .get();
 
             QuerySnapshot querySnapshot = null;
@@ -56,7 +56,7 @@ public class FXMLDocumentController {
 
             List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
             for (QueryDocumentSnapshot document : documents) {
-                if(document.getString("idUtente").equals(password)){
+                if(document.getString("idUtente").equals("2h7jkYKHJ1WG066gXGv6HVDZB9m1")){
                     if(document.getBoolean("admin")){
                         JOptionPane.showMessageDialog(null,"Accesso riuscito");
                         flag=true;
