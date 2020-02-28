@@ -61,15 +61,15 @@ public class FXMLCancellazioniController implements Initializable {
             ex.printStackTrace();
         }
 
-        nickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-        motivazione.setCellValueFactory(new PropertyValueFactory<>("motivazione"));
-        email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        nickname.setCellValueFactory(new PropertyValueFactory<>("Nickname"));
+        motivazione.setCellValueFactory(new PropertyValueFactory<>("Motivazione"));
+        email.setCellValueFactory(new PropertyValueFactory<>("Email"));
 
         ObservableList<Cancellazioni> observableList = FXCollections.observableArrayList();
 
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
         for (QueryDocumentSnapshot document : documents) {
-            observableList.add(new Cancellazioni(document.getString("nickname"), document.getString("motivazione"), document.getString("email")));
+            observableList.add(new Cancellazioni(document.getString("email"), document.getString("motivazione"), document.getString("nickname")));
         }
         tablecancellazioni.setItems(observableList);
     }

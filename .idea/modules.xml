@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DeskApplication.iml" filepath="$PROJECT_DIR$/.idea/DeskApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeskApplication.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DeskApplication.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeskApplication.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DeskApplication.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gruppo13.DeskApplication.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gruppo13.DeskApplication.main.iml" />
     </modules>
   </component>
 </project>
