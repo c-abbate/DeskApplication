@@ -6,9 +6,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import gruppo13.desktop.Model.Segnalazioni;
 import javafx.collections.FXCollections;
@@ -22,7 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FXMLSegnalazioniController implements Initializable {
-
+    Firestore database = FirestoreClient.getFirestore();
     @FXML
     private ResourceBundle resources;
 
@@ -84,10 +82,27 @@ public class FXMLSegnalazioniController implements Initializable {
 
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
         for (QueryDocumentSnapshot document : documents) {
+           
             observableList.add(new Segnalazioni(document.getString("nickname"),document.getString("struttura"),document.getString("testo")));
         }
 
         tablesegnalazioni.setItems(observableList);
+    }
+
+
+    private String structure (String struttura){
+        DocumentReference doc_struttura=database.collection("Strutture").document(struttura);
+        ApiFuture<DocumentSnapshot>future=doc_struttura.get();
+        DocumentSnapshot document= null;
+        try{
+            document=future.get();
+
+    }catch(InterruptedException e){
+        e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return  document.getString("nome");
     }
 
 

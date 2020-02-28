@@ -2,15 +2,17 @@ package gruppo13.desktop.Controller;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-
+import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
+import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import gruppo13.desktop.Model.Utenti;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +44,9 @@ public class FXMListaUtentiController implements Initializable {
 
 
     public void clicksospendi(javafx.event.ActionEvent actionEvent) {
-
+    ObservableList<Utenti>utentiList;
+    utentiList=tabella.getSelectionModel().getSelectedItems();
+    String nick=utentiList.get(0).getNickname();
 
     }
 
