@@ -1,13 +1,27 @@
 package gruppo13.desktop.Controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
+import gruppo13.desktop.Model.Segnalazioni;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class FXMLSegnalazioniController {
+public class FXMLSegnalazioniController implements Initializable {
 
     @FXML
     private ResourceBundle resources;
@@ -22,23 +36,59 @@ public class FXMLSegnalazioniController {
     private Button btnannulla;
 
     @FXML
-    private ListView<?> listsegnalazioni;
+    private TableView<Segnalazioni> tablesegnalazioni;
 
     @FXML
-    public void annullapressed(ActionEvent event) {
+    private TableColumn<?, ?> nickname;
+
+    @FXML
+    private TableColumn<?, ?> struttura;
+
+    @FXML
+    private TableColumn<?, ?> testo;
+
+    @FXML
+    void annullapressed(ActionEvent event) {
 
     }
 
     @FXML
-    public void eliminapressed(ActionEvent event) {
+    void eliminapressed(ActionEvent event) {
 
     }
 
-    @FXML
-    void initialize() {
-        assert btnelimina != null : "fx:id=\"btnelimina\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
-        assert btnannulla != null : "fx:id=\"btnannulla\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
-        assert listsegnalazioni != null : "fx:id=\"listsegnalazioni\" was not injected: check your FXML file 'FXMLSegnalazioni.fxml'.";
 
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        Firestore db = FirestoreClient.getFirestore();
+
+        ApiFuture<QuerySnapshot> query = db.collection("Segnalazioni").get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        nickname.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+        struttura.setCellValueFactory(new PropertyValueFactory<>("struttura"));
+        testo.setCellValueFactory(new PropertyValueFactory<>("testo"));
+
+        ObservableList<Segnalazioni> observableList = FXCollections.observableArrayList();
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            observableList.add(new Segnalazioni(document.getString("nickname"),document.getString("struttura"),document.getString("testo")));
+        }
+
+        tablesegnalazioni.setItems(observableList);
     }
+
+
 }
