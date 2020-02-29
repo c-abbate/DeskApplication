@@ -1,8 +1,6 @@
 package gruppo13.desktop.Controller;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,13 +9,11 @@ import java.util.concurrent.ExecutionException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
-import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
-import gruppo13.desktop.ApplicationClass.ListaUtenti;
 import gruppo13.desktop.Model.Utenti;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,6 +52,37 @@ public class FXMListaUtentiController implements Initializable {
     @FXML
     private TableColumn<?, ?> nome;
 
+    @FXML
+    private TableColumn<Utenti, String> status;
+
+
+    public void clickabilita(javafx.event.ActionEvent actionEvent) {
+
+        if(riga_selezionata == -1){
+            JOptionPane.showMessageDialog(null,"Nessun utente selezionato");
+            return;
+        }
+
+        String id_utente = id_utenti.get(riga_selezionata);
+
+
+        //Metodo firebase richiesta sospensione account
+        UserRecord.UpdateRequest request= new UserRecord.UpdateRequest(id_utente).setDisabled(false);
+        try {
+            if(!mAuth.getUser(id_utente).isDisabled()){
+                JOptionPane.showMessageDialog(null,"L'utente è già abilitato");
+            }else{
+                mAuth.updateUser(request);
+                JOptionPane.showMessageDialog(null,"L'utente è stato abilitato");
+                status.setCellValueFactory(new PropertyValueFactory<>(" "));
+            }
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
+        }
+        riga_selezionata = -1;
+    }
+
+
 
 
     public void clicksospendi(javafx.event.ActionEvent actionEvent) {
@@ -76,6 +103,8 @@ public class FXMListaUtentiController implements Initializable {
             }else{
                 mAuth.updateUser(request);
                 JOptionPane.showMessageDialog(null,"L'utente è stato sospeso");
+
+
             }
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
@@ -118,6 +147,7 @@ public class FXMListaUtentiController implements Initializable {
             }
         });
     }
+
 
 
 }
