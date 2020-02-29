@@ -6,10 +6,25 @@ public class Utenti {
     private SimpleStringProperty Nome;
     private SimpleStringProperty Cognome;
     private SimpleStringProperty Nickname;
-    public Utenti(String nome,String cognome,String nickname){
+    private SimpleStringProperty Status;
+
+    public Utenti(String nome,String cognome,String nickname,String status){
         Nome = new SimpleStringProperty(nome);
         Cognome = new SimpleStringProperty(cognome);
         Nickname = new SimpleStringProperty(nickname);
+        Status = new SimpleStringProperty(status);
+    }
+
+    public String getStatus() {
+        return Status.get();
+    }
+
+    public SimpleStringProperty statusProperty() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        this.Status.set(status);
     }
 
     public String getNome() {
