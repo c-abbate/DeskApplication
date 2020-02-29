@@ -8,16 +8,20 @@ import java.util.concurrent.ExecutionException;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import gruppo13.desktop.Model.Segnalazione;
+import gruppo13.desktop.Model.Segnalazioni;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+
+import javax.swing.*;
 
 public class FXMLSegnalazioniController implements Initializable {
 
@@ -34,7 +38,7 @@ public class FXMLSegnalazioniController implements Initializable {
     private Button btnannulla;
 
     @FXML
-    private TableView<Segnalazione> tablesegnalazioni;
+    private TableView<Segnalazioni> tablesegnalazioni;
 
     @FXML
     private TableColumn<?, ?> nickname;
@@ -44,14 +48,53 @@ public class FXMLSegnalazioniController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> testo;
+    private Firestore database = FirestoreClient.getFirestore();
+    private int riga_selezionata=-1;
+    List<String>Struttura;
+    List<String>Id_cancellazioni;
+    private Segnalazioni segnalazione_selezionata;
 
     @FXML
     void annullapressed(ActionEvent event) {
+
 
     }
 
     @FXML
     void eliminapressed(ActionEvent event) {
+        if(riga_selezionata == -1){
+            JOptionPane.showMessageDialog(null,"nessuna riga selezionata");
+            return;
+        }
+        String segnalazione=Struttura.get(riga_selezionata);
+        CollectionReference recensioni=database.collection("Recensione");
+        CollectionReference segnalazioni=database.collection("Segnalazioni");
+        ApiFuture<QuerySnapshot> query = recensioni.get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document: documents) {
+            if(document.getString("idAutore").equals(segnalazione)){
+                recensioni.document(document.getId()).delete();
+            }
+        }
+
+
+        segnalazioni.document(Struttura.get(riga_selezionata)).delete();
+        tablesegnalazioni.getItems().remove(segnalazione_selezionata);
+        segnalazione_selezionata = null;
+        riga_selezionata = -1;
+        JOptionPane.showMessageDialog(null,"Recensione eliminata");
+
 
     }
 
@@ -81,7 +124,7 @@ public class FXMLSegnalazioniController implements Initializable {
         struttura.setCellValueFactory(new PropertyValueFactory<>("struttura"));
         testo.setCellValueFactory(new PropertyValueFactory<>("testo"));
 
-        ObservableList<Segnalazione> observableList = FXCollections.observableArrayList();
+        ObservableList<Segnalazioni> observableList = FXCollections.observableArrayList();
 
         List<QueryDocumentSnapshot> documents_segnalazioni = querySnapshot_segnalazioni.getDocuments();
         List<QueryDocumentSnapshot> documents_strutture;
@@ -89,7 +132,7 @@ public class FXMLSegnalazioniController implements Initializable {
             documents_strutture = querySnapshot_strutture.getDocuments();
             for (QueryDocumentSnapshot document_strutture: documents_strutture) {
                 if(document_strutture.getId().equals(document.getString("struttura"))){
-                    observableList.add(new Segnalazione(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
+                    observableList.add(new Segnalazioni(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
                     break;
                 }
 
@@ -98,6 +141,16 @@ public class FXMLSegnalazioniController implements Initializable {
         }
 
         tablesegnalazioni.setItems(observableList);
+        tablesegnalazioni.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                riga_selezionata = tablesegnalazioni.getSelectionModel().getSelectedIndex();
+                segnalazione_selezionata = tablesegnalazioni.getSelectionModel().getSelectedItem();
+
+            }
+        });
+    }
     }
 
-}
+
+
