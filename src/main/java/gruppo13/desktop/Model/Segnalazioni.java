@@ -2,6 +2,8 @@ package gruppo13.desktop.Model;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.Objects;
+
 public class Segnalazioni {
 
     private SimpleStringProperty Struttura;
@@ -12,6 +14,14 @@ public class Segnalazioni {
         Testo = new SimpleStringProperty(testo);
         Struttura = new SimpleStringProperty(struttura);
         Nickname = new SimpleStringProperty(nickname);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Segnalazioni that = (Segnalazioni) o;
+        return Struttura.equals(that.Struttura) && Testo.equals(that.Testo) && Nickname.equals(that.Nickname);
     }
 
     public String getStruttura() {

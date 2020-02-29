@@ -1,6 +1,7 @@
 package gruppo13.desktop.Controller;
 
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -25,6 +26,12 @@ import javax.swing.*;
 
 public class FXMLSegnalazioniController implements Initializable {
 
+    private Firestore database = FirestoreClient.getFirestore();
+    private int riga_selezionata=-1;
+    List<String>Id_Sengnalazioni;
+    List<String>Id_Recensioni;
+    private Segnalazioni segnalazione_selezionata;
+
     @FXML
     private ResourceBundle resources;
 
@@ -48,16 +55,24 @@ public class FXMLSegnalazioniController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> testo;
-    private Firestore database = FirestoreClient.getFirestore();
-    private int riga_selezionata=-1;
-    List<String>Struttura;
-    List<String>Id_cancellazioni;
-    private Segnalazioni segnalazione_selezionata;
 
     @FXML
     void annullapressed(ActionEvent event) {
+        if(riga_selezionata == -1){
+            JOptionPane.showMessageDialog(null,"nessuna riga selezionata");
+            return;
+        }
+        String id_segnalazione_selezionata = Id_Sengnalazioni.get(riga_selezionata);
+        CollectionReference segnalazioni = database.collection("Segnalazioni");
+        segnalazioni.document(id_segnalazione_selezionata).delete();
 
 
+
+        tablesegnalazioni.getItems().remove(segnalazione_selezionata);
+        Id_Sengnalazioni.remove(id_segnalazione_selezionata);
+        riga_selezionata = -1;
+        segnalazione_selezionata = null;
+        JOptionPane.showMessageDialog(null,"Segnalazione eliminata");
     }
 
     @FXML
@@ -66,9 +81,11 @@ public class FXMLSegnalazioniController implements Initializable {
             JOptionPane.showMessageDialog(null,"nessuna riga selezionata");
             return;
         }
-        String segnalazione=Struttura.get(riga_selezionata);
-        CollectionReference recensioni=database.collection("Recensione");
-        CollectionReference segnalazioni=database.collection("Segnalazioni");
+        String id_segnalazione_selezionata = Id_Sengnalazioni.get(riga_selezionata);
+        String recensione_da_eliminare = Id_Recensioni.get(riga_selezionata);
+
+        CollectionReference recensioni = database.collection("Recensione");
+        CollectionReference segnalazioni = database.collection("Segnalazioni");
         ApiFuture<QuerySnapshot> query = recensioni.get();
 
         QuerySnapshot querySnapshot = null;
@@ -82,24 +99,29 @@ public class FXMLSegnalazioniController implements Initializable {
 
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 
+
         for (QueryDocumentSnapshot document: documents) {
-            if(document.getString("idAutore").equals(segnalazione)){
+            if(document.getId().equals(recensione_da_eliminare)){
                 recensioni.document(document.getId()).delete();
+                break;
             }
         }
 
 
-        segnalazioni.document(Struttura.get(riga_selezionata)).delete();
+        segnalazioni.document(id_segnalazione_selezionata).delete();
         tablesegnalazioni.getItems().remove(segnalazione_selezionata);
+        Id_Recensioni.remove(recensione_da_eliminare);
+        Id_Sengnalazioni.remove(id_segnalazione_selezionata);
         segnalazione_selezionata = null;
         riga_selezionata = -1;
         JOptionPane.showMessageDialog(null,"Recensione eliminata");
 
 
+
+
+
+
     }
-
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -128,10 +150,15 @@ public class FXMLSegnalazioniController implements Initializable {
 
         List<QueryDocumentSnapshot> documents_segnalazioni = querySnapshot_segnalazioni.getDocuments();
         List<QueryDocumentSnapshot> documents_strutture;
+        Id_Sengnalazioni = new LinkedList<>();
+        Id_Recensioni = new LinkedList<>();
+
         for (QueryDocumentSnapshot document : documents_segnalazioni) {
             documents_strutture = querySnapshot_strutture.getDocuments();
             for (QueryDocumentSnapshot document_strutture: documents_strutture) {
                 if(document_strutture.getId().equals(document.getString("struttura"))){
+                    Id_Sengnalazioni.add(document.getId());
+                    Id_Recensioni.add(document.getString("recensione"));
                     observableList.add(new Segnalazioni(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
                     break;
                 }
