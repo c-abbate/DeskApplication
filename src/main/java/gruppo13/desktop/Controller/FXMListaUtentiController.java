@@ -31,6 +31,7 @@ public class FXMListaUtentiController implements Initializable {
 
     private Firestore database = FirestoreClient.getFirestore();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Utenti utente_selezionato;
     private int riga_selezionata = -1;
     private List<String> id_utenti;
 
@@ -53,7 +54,7 @@ public class FXMListaUtentiController implements Initializable {
     private TableColumn<?, ?> nome;
 
     @FXML
-    private TableColumn<Utenti, String> status;
+    private TableColumn<?,?> status;
 
 
     public void clickabilita(javafx.event.ActionEvent actionEvent) {
@@ -67,14 +68,17 @@ public class FXMListaUtentiController implements Initializable {
 
 
         //Metodo firebase richiesta sospensione account
-        UserRecord.UpdateRequest request= new UserRecord.UpdateRequest(id_utente).setDisabled(false);
+
         try {
             if(!mAuth.getUser(id_utente).isDisabled()){
                 JOptionPane.showMessageDialog(null,"L'utente è già abilitato");
             }else{
+                UserRecord.UpdateRequest request= new UserRecord.UpdateRequest(id_utente).setDisabled(false);
                 mAuth.updateUser(request);
+                utente_selezionato.setStatus("Abilitato");
+                tabella.getItems().set(riga_selezionata,utente_selezionato);
                 JOptionPane.showMessageDialog(null,"L'utente è stato abilitato");
-                status.setCellValueFactory(new PropertyValueFactory<>(" "));
+
             }
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
@@ -96,12 +100,15 @@ public class FXMListaUtentiController implements Initializable {
 
 
     //Metodo firebase richiesta sospensione account
-        UserRecord.UpdateRequest request= new UserRecord.UpdateRequest(id_utente).setDisabled(true);
+
         try {
             if(mAuth.getUser(id_utente).isDisabled()){
                 JOptionPane.showMessageDialog(null,"L'utente è già sospeso");
             }else{
+                UserRecord.UpdateRequest request= new UserRecord.UpdateRequest(id_utente).setDisabled(true);
                 mAuth.updateUser(request);
+                utente_selezionato.setStatus("Sospeso");
+                tabella.getItems().set(riga_selezionata,utente_selezionato);
                 JOptionPane.showMessageDialog(null,"L'utente è stato sospeso");
 
 
@@ -129,25 +136,42 @@ public class FXMListaUtentiController implements Initializable {
         nickname.setCellValueFactory(new PropertyValueFactory<>("Nickname"));
         cognome.setCellValueFactory(new PropertyValueFactory<>("Cognome"));
         nome.setCellValueFactory(new PropertyValueFactory<>("Nome"));
+        status.setCellValueFactory(new PropertyValueFactory<>("Status"));
 
         ObservableList<Utenti> observableList = FXCollections.observableArrayList();
 
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-        id_utenti = new LinkedList<String>();
+        id_utenti = new LinkedList<>();
+        String status;
 
         for (QueryDocumentSnapshot document : documents) {
             id_utenti.add(document.getString("idUtente"));
-            observableList.add(new Utenti(document.getString("nome"),document.getString("cognome"),document.getString("nickname")));
+            status = getUserStatus(document.getString("idUtente"));
+            observableList.add(new Utenti(document.getString("nome"),document.getString("cognome"),document.getString("nickname"),status));
         }
         tabella.setItems(observableList);
         tabella.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                utente_selezionato = tabella.getSelectionModel().getSelectedItem();
                 riga_selezionata = tabella.getSelectionModel().getSelectedIndex();
             }
         });
     }
 
+    private String getUserStatus(String idUtente) {
+        String status = " ";
+        try {
+            if(!mAuth.getUser(idUtente).isDisabled()){
+                status = "Abilitato";
+            }else{
+                status = "Sospeso";
+            }
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 
 
 }

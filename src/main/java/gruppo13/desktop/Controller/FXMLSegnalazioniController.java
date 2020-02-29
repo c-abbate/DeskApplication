@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import gruppo13.desktop.Model.Segnalazione;
+import gruppo13.desktop.Model.Segnalazioni;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,7 +34,7 @@ public class FXMLSegnalazioniController implements Initializable {
     private Button btnannulla;
 
     @FXML
-    private TableView<Segnalazione> tablesegnalazioni;
+    private TableView<Segnalazioni> tablesegnalazioni;
 
     @FXML
     private TableColumn<?, ?> nickname;
@@ -81,7 +81,7 @@ public class FXMLSegnalazioniController implements Initializable {
         struttura.setCellValueFactory(new PropertyValueFactory<>("struttura"));
         testo.setCellValueFactory(new PropertyValueFactory<>("testo"));
 
-        ObservableList<Segnalazione> observableList = FXCollections.observableArrayList();
+        ObservableList<Segnalazioni> observableList = FXCollections.observableArrayList();
 
         List<QueryDocumentSnapshot> documents_segnalazioni = querySnapshot_segnalazioni.getDocuments();
         List<QueryDocumentSnapshot> documents_strutture;
@@ -89,7 +89,7 @@ public class FXMLSegnalazioniController implements Initializable {
             documents_strutture = querySnapshot_strutture.getDocuments();
             for (QueryDocumentSnapshot document_strutture: documents_strutture) {
                 if(document_strutture.getId().equals(document.getString("struttura"))){
-                    observableList.add(new Segnalazione(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
+                    observableList.add(new Segnalazioni(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
                     break;
                 }
 

@@ -61,6 +61,7 @@ public class FXMLCancellazioniController implements Initializable {
         }
 
         String id_utente = id_utenti.get(riga_selezionata);
+        String id_richiesta = Documents_richieste.get(riga_selezionata);
 
         CollectionReference recensioni = database.collection("Recensione");
         CollectionReference richieste = database.collection("Cancellazioni");
@@ -89,14 +90,39 @@ public class FXMLCancellazioniController implements Initializable {
             e.printStackTrace();
         }
 
+        delete_user_reporting(id_utente);
         delete_user_document(id_utente);
-        richieste.document(Documents_richieste.get(riga_selezionata)).delete();
+        richieste.document(id_richiesta).delete();
+        Documents_richieste.remove(id_richiesta);
         tablecancellazioni.getItems().remove(richiesta_selezionata);
         richiesta_selezionata = null;
         riga_selezionata = -1;
         JOptionPane.showMessageDialog(null,"Utente eliminato");
 
     }
+
+    private void delete_user_reporting(String id_utente) {
+        CollectionReference segnalazioni = database.collection("Segnalazioni");
+        ApiFuture<QuerySnapshot> query = segnalazioni.get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            if(document.getString("idAutore").equals(id_utente)){
+                segnalazioni.document(document.getId()).delete();
+            }
+        }
+    }
+
 
     private void delete_user_document(String id_utente) {
         CollectionReference utenti = database.collection("Utenti");

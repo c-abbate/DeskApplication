@@ -2,12 +2,12 @@ package gruppo13.desktop.Model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class Segnalazione {
+public class Segnalazioni {
     private SimpleStringProperty Nickname;
     private SimpleStringProperty Struttura;
     private SimpleStringProperty Testo;
 
-    public Segnalazione(String nickname, String struttura, String testo) {
+    public Segnalazioni(String nickname, String struttura, String testo) {
         Nickname = new SimpleStringProperty(nickname);
         Struttura = new SimpleStringProperty(struttura);
         Testo = new SimpleStringProperty(testo);
