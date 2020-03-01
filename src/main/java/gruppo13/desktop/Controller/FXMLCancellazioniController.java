@@ -62,6 +62,7 @@ public class FXMLCancellazioniController implements Initializable {
 
         String id_utente = id_utenti.get(riga_selezionata);
         String id_richiesta = Documents_richieste.get(riga_selezionata);
+        List<String> strutture_da_aggiornare = new LinkedList<>();
 
         CollectionReference recensioni = database.collection("Recensione");
         CollectionReference richieste = database.collection("Cancellazioni");
@@ -80,6 +81,9 @@ public class FXMLCancellazioniController implements Initializable {
 
         for (QueryDocumentSnapshot document: documents) {
             if(document.getString("idAutore").equals(id_utente)){
+                if(!strutture_da_aggiornare.contains(document.getString("struttura"))){
+                    strutture_da_aggiornare.add(document.getString("struttura"));
+                }
                 recensioni.document(document.getId()).delete();
             }
         }
@@ -90,15 +94,52 @@ public class FXMLCancellazioniController implements Initializable {
             e.printStackTrace();
         }
 
+
         delete_user_reporting(id_utente);
         delete_user_document(id_utente);
         richieste.document(id_richiesta).delete();
+        for (String struttura: strutture_da_aggiornare) {
+            aggiorna_valutazione_struttura(struttura);
+        }
         Documents_richieste.remove(id_richiesta);
         tablecancellazioni.getItems().remove(richiesta_selezionata);
         richiesta_selezionata = null;
         riga_selezionata = -1;
         JOptionPane.showMessageDialog(null,"Utente eliminato");
 
+    }
+
+    private void aggiorna_valutazione_struttura(String struttura_da_aggiornare) {
+        int voto = 0,count = 0,totale = 0;
+        double media;
+        String valutazione;
+        ApiFuture<QuerySnapshot> query = database.collection("Recensione")
+                .whereEqualTo("struttura",struttura_da_aggiornare)
+                .get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            valutazione = String.valueOf(document.get("voto"));
+            voto = Integer.parseInt(valutazione);
+            totale = totale + voto;
+            count++;
+        }
+        if(count > 0){
+            media = totale/count;
+        }else{
+            media = 0.0;
+        }
+
+        database.collection("Strutture").document(struttura_da_aggiornare).update("valutazione",media);
     }
 
     private void delete_user_reporting(String id_utente) {

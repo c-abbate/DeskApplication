@@ -18,10 +18,12 @@ public class Segnalazioni {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Segnalazioni that = (Segnalazioni) o;
-        return Struttura.equals(that.Struttura) && Testo.equals(that.Testo) && Nickname.equals(that.Nickname);
+        if(o == null) return false;
+        if(o.getClass() != Segnalazioni.class) return false;
+        Segnalazioni other = (Segnalazioni)o;
+
+        return Nickname.get().equals(other.Nickname.get()) && Testo.get().equals(other.Testo.get()) && Struttura.get().equals(other.Struttura.get());
+
     }
 
     public String getStruttura() {

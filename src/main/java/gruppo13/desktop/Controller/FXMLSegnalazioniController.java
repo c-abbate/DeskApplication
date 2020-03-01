@@ -83,6 +83,7 @@ public class FXMLSegnalazioniController implements Initializable {
         }
         String id_segnalazione_selezionata = Id_Sengnalazioni.get(riga_selezionata);
         String recensione_da_eliminare = Id_Recensioni.get(riga_selezionata);
+        String struttura_da_aggiornare = null;
 
         CollectionReference recensioni = database.collection("Recensione");
         CollectionReference segnalazioni = database.collection("Segnalazioni");
@@ -102,13 +103,17 @@ public class FXMLSegnalazioniController implements Initializable {
 
         for (QueryDocumentSnapshot document: documents) {
             if(document.getId().equals(recensione_da_eliminare)){
+                struttura_da_aggiornare = document.getString("struttura");
                 recensioni.document(document.getId()).delete();
                 break;
             }
         }
 
-
-        segnalazioni.document(id_segnalazione_selezionata).delete();
+        
+        if(struttura_da_aggiornare != null){
+            aggiorna_valutazione_struttura(struttura_da_aggiornare);
+        }
+        delete_all_reporting(recensione_da_eliminare);
         tablesegnalazioni.getItems().remove(segnalazione_selezionata);
         Id_Recensioni.remove(recensione_da_eliminare);
         Id_Sengnalazioni.remove(id_segnalazione_selezionata);
@@ -121,6 +126,62 @@ public class FXMLSegnalazioniController implements Initializable {
 
 
 
+    }
+
+    private void aggiorna_valutazione_struttura(String struttura_da_aggiornare) {
+        int voto = 0,count = 0,totale = 0;
+        double media;
+        String valutazione;
+        ApiFuture<QuerySnapshot> query = database.collection("Recensione")
+                .whereEqualTo("struttura",struttura_da_aggiornare)
+                .get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            valutazione = String.valueOf(document.get("voto"));
+            voto = Integer.parseInt(valutazione);
+            totale = totale + voto;
+            count++;
+        }
+        if(count > 0){
+            media = totale/count;
+        }else{
+            media = 0.0;
+        }
+
+        database.collection("Strutture").document(struttura_da_aggiornare).update("valutazione",media);
+    }
+
+    private void delete_all_reporting(String recensione_da_eliminare) {
+        CollectionReference segnalazioni = database.collection("Segnalazioni");
+        ApiFuture<QuerySnapshot> query = segnalazioni.get();
+
+        QuerySnapshot querySnapshot = null;
+        try {
+            querySnapshot = query.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+
+        for (QueryDocumentSnapshot document: documents) {
+            if(document.getString("recensione").equals(recensione_da_eliminare)){
+                segnalazioni.document(document.getId()).delete();
+            }
+        }
     }
 
     @Override
@@ -152,14 +213,20 @@ public class FXMLSegnalazioniController implements Initializable {
         List<QueryDocumentSnapshot> documents_strutture;
         Id_Sengnalazioni = new LinkedList<>();
         Id_Recensioni = new LinkedList<>();
+        Segnalazioni da_inserire;
 
         for (QueryDocumentSnapshot document : documents_segnalazioni) {
             documents_strutture = querySnapshot_strutture.getDocuments();
             for (QueryDocumentSnapshot document_strutture: documents_strutture) {
                 if(document_strutture.getId().equals(document.getString("struttura"))){
-                    Id_Sengnalazioni.add(document.getId());
-                    Id_Recensioni.add(document.getString("recensione"));
-                    observableList.add(new Segnalazioni(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo")));
+                    da_inserire = new Segnalazioni(document.getString("nickname"),document_strutture.getString("nome"),document.getString("testo"));
+                    if(!contains(observableList,da_inserire)){
+                        Id_Sengnalazioni.add(document.getId());
+                        Id_Recensioni.add(document.getString("recensione"));
+                        observableList.add(da_inserire);
+                    }
+
+
                     break;
                 }
 
@@ -177,7 +244,19 @@ public class FXMLSegnalazioniController implements Initializable {
             }
         });
     }
+
+    private boolean contains(ObservableList<Segnalazioni> observableList, Segnalazioni da_inserire) {
+
+        for (Segnalazioni inserite: observableList) {
+            if(inserite.equals(da_inserire)){
+                return true;
+
+            }
+        }
+
+        return false;
     }
+}
 
 
 
