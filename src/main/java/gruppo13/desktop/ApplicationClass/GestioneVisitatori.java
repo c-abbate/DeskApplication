@@ -38,7 +38,7 @@ public class GestioneVisitatori {
             ListaUtenti = loadStage(loader);
 
             //  GestioneVisitatoriController = loader.getController();
-
+            ListaUtenti.setTitle("Utenti iscritti");
             ListaUtenti.show();
         }
         catch (Exception e) {
@@ -55,7 +55,7 @@ public class GestioneVisitatori {
             Cancellazioni = loadStage(loader);
 
             //  GestioneVisitatoriController = loader.getController();
-
+            Cancellazioni.setTitle("Richieste canzallazione utente");
             Cancellazioni.show();
         }
         catch (Exception e) {
@@ -72,7 +72,7 @@ public class GestioneVisitatori {
             Segnalazioni = loadStage(loader);
 
             //  GestioneVisitatoriController = loader.getController();
-
+            Segnalazioni.setTitle("Recensioni segnalate");
             Segnalazioni.show();
         }
         catch (Exception e) {
