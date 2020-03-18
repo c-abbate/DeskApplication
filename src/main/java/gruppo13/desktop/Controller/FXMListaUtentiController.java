@@ -159,7 +159,7 @@ public class FXMListaUtentiController implements Initializable {
         });
     }
 
-    private String getUserStatus(String idUtente) {
+    public String getUserStatus(String idUtente) {
         String status = " ";
         try {
             if(!mAuth.getUser(idUtente).isDisabled()){
